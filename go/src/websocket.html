@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      margin: 0;
+    }
+    .log {
+      margin: 20px auto;
+      height: 200px;
+      overflow: auto;
+      border: solid 1px #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat">
+    <input id="txt-message">
+    <button id="btn-send">Send</button>
+  </div>
+  <div class="log">
+    
+  </div>
+  <script>
+    var ws = new WebSocket('{{.}}');
+
+    ws.onopen = function (e) {
+      log('OPENING');
+    };
+
+    ws.onclose = function (e) {
+      log('CLOSED');
+    };
+
+    ws.onerror = function (e) {
+      log('ERROR: ' + e.data);
+    };
+
+    ws.onmessage = function (e) {
+      log('RECEIVE: ' + e.data);
+    };
+
+    function send () {
+      var messageEl = document.querySelector('#txt-message');
+      var message = messageEl.value;
+      ws.send(message);
+      log('SEND: ' + message);
+    }
+
+    function log (text) {
+      var logEl = document.querySelector('.log');
+      logEl.innerHTML = '<div>' + text + '</div>\n' + logEl.innerHTML;
+    }
+
+    (function () {
+      var btnSendEl = document.querySelector('#btn-send');
+      btnSendEl.addEventListener('click', send);
+    })();
+  </script>
+</body>
+</html>

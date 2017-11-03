@@ -1,0 +1,6 @@
+.DS_Store
+.vscode
+postgres/data
+go/lib
+go/pkg
+go/src/github.com
